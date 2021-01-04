@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>ca60ed7a-6a65-46a4-b315-1e3962e2a4dc</ProjectGuid>
+    <ProjectGuid>211d4e59-53ae-4326-b381-e3cd1c184097</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FSWDFinalProject.DATA.EF</RootNamespace>
