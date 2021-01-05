@@ -1,0 +1,9 @@
+﻿/* Form Styling */
+#Form{
+    text-align: center;
+    margin: auto;
+}
+
+#FormSubmit{
+    padding-top: 15px;
+}

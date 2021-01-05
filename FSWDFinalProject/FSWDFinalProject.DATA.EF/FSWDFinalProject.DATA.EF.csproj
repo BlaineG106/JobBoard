@@ -74,6 +74,7 @@
     <Compile Include="Location.cs">
       <DependentUpon>JobBoardDBDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Metadata\JobBoardDBMetadata.cs" />
     <Compile Include="OpenPosition.cs">
       <DependentUpon>JobBoardDBDataModel.tt</DependentUpon>
     </Compile>
