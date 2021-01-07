@@ -3,13 +3,13 @@
 @{
     ViewBag.Title = "Index";
 }
+<h2 id="ListHead"></h2>
+<h2 class="text-center py-5">Locations</h2>
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
+<p id="ListCreate">
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
 </p>
-<table class="table">
+<table class="table col-md-10" id="List">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.StoreNumber)

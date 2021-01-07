@@ -1,9 +1,41 @@
-﻿/* Form Styling */
-#Form{
-    text-align: center;
+﻿/* Form and List Styling */
+#Form {
+    margin: auto;
+    padding: 50px;
+    background-color: lightgray;
+    box-shadow: black 10px 10px;
+}
+
+#FormHead{
+    padding-top: 90px;
+    background-color: #212529;
+}
+
+#ListHead {
+    padding-top: 90px;
+    background-color: #212529;
+}
+
+#FormSubmit {
+    padding-top: 15px;
+}
+
+#FormRow {
+    text-align: left;
+    padding: 15px;
+}
+
+#List{
+    width: 80%;
     margin: auto;
 }
 
-#FormSubmit{
-    padding-top: 15px;
+#ListCreate{
+    padding-left: 200px;
+}
+
+
+/* Login Partial Link Styling */
+#LoginLinks{
+    text-decoration: none;
 }
