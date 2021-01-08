@@ -53,6 +53,9 @@ namespace FSWDFinalProject.DATA.EF//.Metadata
     #region UserDetails Metadata
     public class UserDetailsMetadata
     {
+        [Display(Name = "User ID")]
+        public string UserId { get; set; }
+
         [Required(ErrorMessage = "* First Name is Required *")]
         [StringLength(50, ErrorMessage = "* First Name must be 50 characters or less *")]
         public string FirstName { get; set; }

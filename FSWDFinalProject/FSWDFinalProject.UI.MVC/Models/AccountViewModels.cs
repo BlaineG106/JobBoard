@@ -64,6 +64,18 @@ namespace FSWDFinalProject.UI.MVC.Models
 
     public class RegisterViewModel
     {
+
+        [Required]
+        [StringLength(50, ErrorMessage = "First Name must be 50 characters or less.", MinimumLength = 1)]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [StringLength(50, ErrorMessage = "Last Name must be 50 characters or less.", MinimumLength = 1)]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
@@ -79,6 +91,9 @@ namespace FSWDFinalProject.UI.MVC.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "Resume")]
+        public string ResumeFileName { get; set; }
     }
 
     public class ResetPasswordViewModel

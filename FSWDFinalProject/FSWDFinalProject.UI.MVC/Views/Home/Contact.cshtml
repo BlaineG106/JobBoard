@@ -1,20 +1,36 @@
-﻿@{
-    ViewBag.Title = "Contact";
-}
-<hgroup>
-    <h2>@ViewBag.Title.</h2>
-    <h3>@ViewBag.Message</h3>
-</hgroup>
-<div>
-    <address>
-        One Microsoft Way<br />
-        Redmond, WA 98052-6399<br />
-        <abbr title="Phone">P:</abbr>
-        425.555.0100
-    </address>
+﻿@model FSWDFinalProject.UI.MVC.Models.ContactViewModel
+    @{
+        ViewBag.Title = "Contact";
+    }
 
-    <address>
-        <i class="icon-envelope"></i><strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-        <i class="icon-envelope"></i><strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-    </address>
-</div>
+    <h2 id="FormHead"></h2>
+    <h2 class="text-center py-5">Contact Us</h2>
+    <h3 class="text-center">We look forward to hearing from you</h3>
+
+    <div class="col-md-8" id="Form">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-row">
+                <div class="col-md-6 form-group">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Name" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-6 form-group">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control", @placeholder = "Subject" } })
+                @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.EditorFor(model => model.Message, new { htmlAttributes = new { @class = "form-control", @placeholder = "Message" } })
+                @Html.ValidationMessageFor(model => model.Message, "", new { @class = "text-danger" })
+            </div>
+            <div class="text-center"><button type="submit" class="btn btn-primary">Send Message</button></div>
+        }
+        <div>@ViewBag.SendEmailError</div>
+    </div>

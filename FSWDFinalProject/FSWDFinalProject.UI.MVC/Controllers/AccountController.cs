@@ -1,7 +1,9 @@
-﻿using FSWDFinalProject.UI.MVC.Models;
+﻿using FSWDFinalProject.DATA.EF;
+using FSWDFinalProject.UI.MVC.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -145,7 +147,7 @@ namespace FSWDFinalProject.UI.MVC.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(RegisterViewModel model, HttpPostedFileBase resumeImg)
         {
             if (ModelState.IsValid)
             {
@@ -153,11 +155,49 @@ namespace FSWDFinalProject.UI.MVC.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
-                    ViewBag.Link = callbackUrl;
-                    return View("DisplayEmail");
+                    #region Create the User Details object to send to EF AFTER the ASPNET User object (above) is successful
+                    UserDetail newUserDetail = new UserDetail();
+                    newUserDetail.UserId = user.Id;
+                    newUserDetail.FirstName = model.FirstName;
+                    newUserDetail.LastName = model.LastName;
+
+                    //file upload code - 
+                    #region File Upload
+                    string imgName = "NoImage.png";
+                    if (resumeImg != null)
+                    {
+                        imgName = resumeImg.FileName;
+
+                        string ext = imgName.Substring(imgName.LastIndexOf('.'));
+
+                        string[] goodExts = { ".pdf" };
+
+                        if (goodExts.Contains(ext.ToLower()) && (resumeImg.ContentLength <= 4194304))
+                        {
+                            imgName = Guid.NewGuid() + ext;
+
+                            resumeImg.SaveAs(Server.MapPath("~/Content/ResumeImg/" + imgName));
+                        }
+                        else
+                        {
+                            imgName = "NoImage.png";
+                        }
+                    }
+                    newUserDetail.ResumeFilename = imgName;
+                    #endregion
+                    newUserDetail.ResumeFilename = resumeImg.FileName;
+
+                    JobBoardDBEntities ctx = new JobBoardDBEntities();
+                    ctx.UserDetails.Add(newUserDetail);
+                    ctx.SaveChanges();
+                    #endregion
+
+                    UserManager.AddToRole(user.Id, "Employee");
+                    //var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    //await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
+                    //ViewBag.Link = callbackUrl;
+                    return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
             }
