@@ -17,11 +17,19 @@ namespace FSWDFinalProject.UI.MVC.Controllers
         // GET: Locations
         public ActionResult Index()
         {
-            var locations = db.Locations.Include(l => l.UserDetail);
-            return View(locations.ToList());
+            if (User.IsInRole("Admin"))
+            {
+                var locations = db.Locations.Include(l => l.UserDetail);
+                return View(locations.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         // GET: Locations/Details/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -37,6 +45,7 @@ namespace FSWDFinalProject.UI.MVC.Controllers
         }
 
         // GET: Locations/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             ViewBag.ManagerId = new SelectList(db.UserDetails, "UserId", "FullName");
@@ -48,6 +57,7 @@ namespace FSWDFinalProject.UI.MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create([Bind(Include = "LocationId,StoreNumber,City,State,ManagerId")] Location location)
         {
             if (ModelState.IsValid)
@@ -62,6 +72,7 @@ namespace FSWDFinalProject.UI.MVC.Controllers
         }
 
         // GET: Locations/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -82,6 +93,7 @@ namespace FSWDFinalProject.UI.MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit([Bind(Include = "LocationId,StoreNumber,City,State,ManagerId")] Location location)
         {
             if (ModelState.IsValid)
@@ -95,6 +107,7 @@ namespace FSWDFinalProject.UI.MVC.Controllers
         }
 
         // GET: Locations/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -112,6 +125,7 @@ namespace FSWDFinalProject.UI.MVC.Controllers
         // POST: Locations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult DeleteConfirmed(int id)
         {
             Location location = db.Locations.Find(id);

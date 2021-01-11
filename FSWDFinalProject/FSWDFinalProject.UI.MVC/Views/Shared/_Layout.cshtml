@@ -27,14 +27,50 @@
                 Menu
                 <i class="fas fa-bars ml-1"></i>
             </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
+            <li class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav text-uppercase ml-auto">
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#services">Services</a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#portfolio">Portfolio</a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About</a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#team">Team</a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#contact">Contact</a></li>
-                      @Html.Partial("_LoginPartial")
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="@Url.Action("Index", "Home")">Home</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="@Url.Action("About", "Home")">About</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="@Url.Action("Contact", "Home")">Contact</a></li>
+                    @if (User.IsInRole("Employee"))
+                    {
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="@Url.Action("Index", "OpenPositions")">Open Positions</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="@Url.Action("Index", "Applications")">Applications</a></li>
+                    }
+
+                    @if (User.IsInRole("Manager"))
+                    {
+                        <li class="btn-group nav-item">
+                            <button type="button" class="btn btn-default dropdown-toggle nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                MANAGER
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="@Url.Action("Index", "OpenPositions")">Open Positions</a>
+                                <a class="dropdown-item" href="@Url.Action("Index", "Applications")">Applications</a>
+                                <a class="dropdown-item" href="@Url.Action("Index", "Positions")">Positions</a>
+                            </div>
+                        </li>
+                    }
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="btn-group nav-item">
+                            <button type="button" class="btn btn-default dropdown-toggle nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                ADMIN
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="@Url.Action("Index", "OpenPositions")">Open Positions</a>
+                                <a class="dropdown-item" href="@Url.Action("Index", "Applications")">Applications</a>
+                                <a class="dropdown-item" href="@Url.Action("Index", "Positions")">Positions</a>
+                                <a class="dropdown-item" href="@Url.Action("Index", "Locations")">Locations</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="@Url.Action("Index", "UsersAdmin")">Users</a>
+                                <a class="dropdown-item" href="@Url.Action("Index", "RolesAdmin")">Roles</a>
+                            </div>
+                        </li>
+                    }
+
+                    @Html.Partial("_LoginPartial")
                 </ul>
               
             </div>

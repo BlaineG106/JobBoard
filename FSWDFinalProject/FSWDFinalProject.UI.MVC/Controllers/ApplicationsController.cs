@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using FSWDFinalProject.DATA.EF;
+using Microsoft.AspNet.Identity;
 
 namespace FSWDFinalProject.UI.MVC.Controllers
 {
@@ -18,10 +19,32 @@ namespace FSWDFinalProject.UI.MVC.Controllers
         public ActionResult Index()
         {
             var applications = db.Applications.Include(a => a.ApplicationStatus1).Include(a => a.OpenPosition).Include(a => a.UserDetail);
-            return View(applications.ToList());
+            string currentUser = User.Identity.GetUserId();
+            //Admin
+            if (User.IsInRole("Admin"))
+            {
+                return View(applications.ToList());
+            }
+            //Manager
+            if (User.IsInRole("Manager"))
+            {
+                var manApplications = db.Applications.Where(a => a.OpenPosition.Location.ManagerId == currentUser);
+                return View(manApplications);
+            }
+            //Employee
+            if (User.IsInRole("Employee"))
+            {
+                var empApplications = db.Applications.Where(a => a.UserId == currentUser);
+                return View(empApplications);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
         // GET: Applications/Details/5
+        [Authorize(Roles = "Admin, Manager, Employee")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -37,6 +60,7 @@ namespace FSWDFinalProject.UI.MVC.Controllers
         }
 
         // GET: Applications/Create
+        [Authorize(Roles = "Admin, Manager")]
         public ActionResult Create()
         {
             ViewBag.ApplicationStatus = new SelectList(db.ApplicationStatuses, "ApplicationStatusId", "StatusName");
@@ -50,6 +74,7 @@ namespace FSWDFinalProject.UI.MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Manager")]
         public ActionResult Create([Bind(Include = "ApplicationId,OpenPositionId,UserId,ApplicationDate,ManagerNotes,ApplicationStatus,ResumeFilename")] Application application, HttpPostedFileBase resumeImg)
         {
             if (ModelState.IsValid)
@@ -66,6 +91,7 @@ namespace FSWDFinalProject.UI.MVC.Controllers
         }
 
         // GET: Applications/Edit/5
+        [Authorize(Roles = "Admin, Manager")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -88,21 +114,23 @@ namespace FSWDFinalProject.UI.MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Manager")]
         public ActionResult Edit([Bind(Include = "ApplicationId,OpenPositionId,UserId,ApplicationDate,ManagerNotes,ApplicationStatus,ResumeFilename")] Application application, HttpPostedFileBase resumeImg)
         {
-            if (ModelState.IsValid)
-            {
-                db.Entry(application).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.ApplicationStatus = new SelectList(db.ApplicationStatuses, "ApplicationStatusId", "StatusName", application.ApplicationStatus);
-            ViewBag.OpenPositionId = new SelectList(db.OpenPositions, "OpenPositionId", "OpenPositionId", application.OpenPositionId);
-            ViewBag.UserId = new SelectList(db.UserDetails, "UserId", "FirstName", application.UserId);
-            return View(application);
+                if (ModelState.IsValid)
+                {
+                    db.Entry(application).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                ViewBag.ApplicationStatus = new SelectList(db.ApplicationStatuses, "ApplicationStatusId", "StatusName", application.ApplicationStatus);
+                ViewBag.OpenPositionId = new SelectList(db.OpenPositions, "OpenPositionId", "OpenPositionId", application.OpenPositionId);
+                ViewBag.UserId = new SelectList(db.UserDetails, "UserId", "FirstName", application.UserId);
+                return View(application);
         }
 
         // GET: Applications/Delete/5
+        [Authorize(Roles = "Admin, Manager")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -120,6 +148,7 @@ namespace FSWDFinalProject.UI.MVC.Controllers
         // POST: Applications/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Manager")]
         public ActionResult DeleteConfirmed(int id)
         {
             Application application = db.Applications.Find(id);

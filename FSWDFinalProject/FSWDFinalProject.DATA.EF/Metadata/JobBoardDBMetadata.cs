@@ -58,10 +58,12 @@ namespace FSWDFinalProject.DATA.EF//.Metadata
 
         [Required(ErrorMessage = "* First Name is Required *")]
         [StringLength(50, ErrorMessage = "* First Name must be 50 characters or less *")]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [Required(ErrorMessage = "* Last Name is Required *")]
         [StringLength(50, ErrorMessage = "* Last Name must be 50 characters or less *")]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
         [Display(Name = "Resume")]

@@ -185,7 +185,6 @@ namespace FSWDFinalProject.UI.MVC.Controllers
                     }
                     newUserDetail.ResumeFilename = imgName;
                     #endregion
-                    newUserDetail.ResumeFilename = resumeImg.FileName;
 
                     JobBoardDBEntities ctx = new JobBoardDBEntities();
                     ctx.UserDetails.Add(newUserDetail);

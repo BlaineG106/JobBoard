@@ -4,10 +4,10 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2 id="FormHead"></h2>
+<h2 class="text-center py-5">Application Details</h2>
 
-<div>
-    <h4>Application</h4>
+<div class="col-md-8" id="Form">
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -32,7 +32,7 @@
 
         <dd>
             @*@Html.DisplayFor(model => model.ResumeFilename)*@
-            <a href="@Url.Content("~/Content/ResumeImg/" + Model.ResumeFilename)" target="_blank">Click to View Document</a>
+            <a style="color: black;" href="@Url.Content("~/Content/ResumeImg/" + Model.ResumeFilename)" target="_blank">Click to View Document</a>
         </dd>
 
         <dt>
@@ -52,16 +52,16 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.UserDetail.FirstName)
+            @Html.DisplayNameFor(model => model.UserDetail.FullName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.UserDetail.FirstName)
+            @Html.DisplayFor(model => model.UserDetail.FullName)
         </dd>
-
     </dl>
+    <p>
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-danger" })
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ApplicationId }, new { @class = "btn btn-primary" })
+    </p>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ApplicationId }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+

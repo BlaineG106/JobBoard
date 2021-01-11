@@ -1,0 +1,44 @@
+﻿@model FSWDFinalProject.DATA.EF.UserDetail
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2 id="FormHead"></h2>
+<h2 class="text-center py-5">Account Details</h2>
+
+<div class="col-md-8" id="Form">
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ResumeFilename)
+        </dt>
+
+        <dd>
+            <a style="color: black;" href="@Url.Content("~/Content/ResumeImg/" + Model.ResumeFilename)" target="_blank">Click to View Resume</a>
+        </dd>
+    </dl>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.UserId }, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Delete Account", "Delete", new { id = Model.UserId }, new { @class = "btn btn-danger" })
+    </p>
+
+</div>
+
+

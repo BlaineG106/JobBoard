@@ -1,0 +1,56 @@
+﻿@model IEnumerable<FSWDFinalProject.DATA.EF.OpenPosition>
+ @using Microsoft.AspNet.Identity;
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2 id="ListHead"></h2>
+<h2 class="text-center py-5">Open Positions</h2>
+
+<p id="ListCreate">
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+</p>
+<table class="table" id="List">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Location.StoreNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Position.Title)
+        </th>
+        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+        {
+            <th></th>
+        }
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location.StoreNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Position.Title)
+            </td>
+            @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+            {
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.OpenPositionId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.OpenPositionId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.OpenPositionId })
+                </td>
+            }
+                <td>
+                    @if (User.IsInRole("Employee"))
+                    {
+                        <a href="@Url.Action("Apply","OpenPositions", new { id = item.OpenPositionId })" class="btn btn-primary">Apply Now</a>
+                    }
+                </td>
+        </tr>
+    }
+
+</table>
